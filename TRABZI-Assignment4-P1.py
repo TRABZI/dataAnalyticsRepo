@@ -2,11 +2,14 @@ import os.path
 from os import path
 import requests
 from urllib.request import urlopen
-import csv
 import streamlit as st
 import altair as alt
 import pandas as pd
+import sys
+import csv
 
+print('you can run this code on streamlit by writing the commande : streamlit run TRABZI-Assignment4-P1.py') 
+	
 st.title("ASSIGNMENT_4")
 st.title("PART ONE")
 st.title("Gender Equality Indicators 1960–2017.")
@@ -16,7 +19,7 @@ The World Bank tracks a number of different measures including fertility rate, l
 """)
 
 st.title("1/ Marks & Channels")
-''' [See python code source] (https://github.com/TRABZI/dataAnalytics/blob/master/pySourceCode.py)
+''' [See python code source] (https://github.com/TRABZI/dataAnalyticsRepo/tree/master)
 '''
 
 
@@ -28,11 +31,11 @@ st.header("Preparation of dataset")
 MY_URL_DATA = 'https://raw.githubusercontent.com/TRABZI/dataAnalyticsRepo/main/gender.csv'
 '''
 Firstly , we download the dataset from the following URL link :
-[See URL link of dataset](https://raw.githubusercontent.com/TRABZI/dataAnalytics/main/gender.csv) '''
+[See URL link of dataset](https://github.com/ZeningQu/World-Bank-Data-by-Indicators/blob/master/gender/gender.csv) '''
 
 
 ''' To do,  we define a function in python that downloads the csv file from the URL '''
-
+print('to execute this code you have download xls file from this link : https://github.com/TRABZI/dataAnalyticsRepo/blob/master/Filtered_gender_data_set-csv.xls')
 #This is a definition of the function to download the csv from url defined above
 with st.echo():
   def download_csv_data_from_url (CSV_URL_DATA):
@@ -58,6 +61,7 @@ with st.echo():
 ''' [Download the xls file](https://github.com/TRABZI/dataAnalyticsRepo/blob/master/Filtered_gender_data_set-csv.xls) '''
 
 #print directory 
+print('\n -> you repository')
 print(os.listdir())
 
 csv_data=pd.read_csv("CSV_downloaded.csv",nrows=500)
@@ -65,18 +69,29 @@ csv_data=pd.read_csv("CSV_downloaded.csv",nrows=500)
 df=pd.DataFrame(csv_data)
 df.to_csv("gender_data_set.csv",index=False,sep='\t')
 
-#The file gender_data_set.csv was filtered using openRefine , and then stored in xls format 
-#Next we will be using the file Filtered_gender_data_set-csv.xls to make data visualizations 
+print('The file gender_data_set.csv was filtered using openRefine , and then stored in xls format')
+print('Next we will be using the file Filtered_gender_data_set-csv.xls to make data visualizations')  
 
 #read xls file 
 ''' We will use a subset of the data to make visualizations'''
 ''' Make sur you have downloaded the xls file from this link [Download the xls file](https://github.com/TRABZI/dataAnalyticsRepo/blob/master/Filtered_gender_data_set-csv.xls)'''
+
+
+try:
+	f=open('Filtered_gender_data_set-csv.xls')
+	f.close()
+except FileNotFoundError:
+	print('the file Filtered_gender_data_set-csv.xls is not existing in your repository, please download it from this link : https://github.com/TRABZI/dataAnalyticsRepo/blob/master/Filtered_gender_data_set-csv.xls')
+	sys.exit(2)
+	
+	
 data=pd.read_excel("Filtered_gender_data_set-csv.xls", nrows=100,sep='\t')
 with st.echo():
 	data=pd.read_excel("Filtered_gender_data_set-csv.xls", nrows=100,sep='\t')
 
 #data size 
 ''' Data Size : use data.shape to see the data size '''
+data=pd.read_excel("Filtered_gender_data_set-csv.xls", nrows=100,sep='\t')
 with st.echo():
 	data.shape
 
@@ -118,22 +133,22 @@ with st.echo():
 st.header("Chart about male Employment")
 with st.echo():
 		chart=alt.Chart(data).mark_bar(filled=True).encode(
-		    alt.Y('Employment to population ratio, 15+, male (%) (modeled ILO estimate):Q'),
-		    alt.X('CountryName:N'),
+		    alt.X('Employment to population ratio, 15+, male (%) (modeled ILO estimate):Q'),
+		    alt.Y('CountryName:N'),
 		    alt.Tooltip('CountryName'),
-		).properties(width=935, height=535)
+		).properties(width=935, height=835)
 		st.write(chart)
 
 ''' Chart above is representing the male Employment to population ratio in some countries in the world . The mark used is bars. This chart is easy to understand and to read '''
 
 
-st.header("Chart about wage & salaried workers (male and female)")
+st.header("Chart about wage & salaried workers (male)")
 with st.echo():
 		chart=alt.Chart(data).mark_bar().encode(
-		    alt.X('CountryName:N'),
-		    alt.Y('Wage and salaried workers, male (% of male employment) (modeled ILO estimate):Q'),
+		    alt.Y('CountryName:N'),
+		    alt.X('Wage and salaried workers, male (% of male employment) (modeled ILO estimate):Q'),
 		    alt.Tooltip('CountryName'),
-		).properties(width=935, height=535)
+		).properties(width=935, height=835)
 		
 		st.write(chart)
 
